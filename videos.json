@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "title": "SAP S/4HANA'ya Giriş",
+    "description": "SAP S/4HANA sistemine ilk giriş, temel navigasyon ve modüllere genel bakış. Yeni başlayanlar için kapsamlı bir oryantasyon eğitimi.",
+    "category": "SAP ERP",
+    "tags": ["SAP", "ERP", "Başlangıç"],
+    "duration": 596,
+    "views": 124,
+    "date": "2026-03-27",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "new": false
+  },
+  {
+    "id": "2",
+    "title": "CRM'de Fırsat Yönetimi",
+    "description": "Müşteri fırsatlarını CRM sistemi üzerinden nasıl takip edeceğinizi, aşamaları nasıl güncelleyeceğinizi ve raporları nasıl yorumlayacağınızı öğrenin.",
+    "category": "CRM",
+    "tags": ["CRM", "Satış"],
+    "duration": 653,
+    "views": 89,
+    "date": "2026-03-20",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "new": false
+  },
+  {
+    "id": "3",
+    "title": "Bordro Süreci — Adım Adım",
+    "description": "Aylık bordro sürecinin tüm adımları: veri girişi, onay akışları ve muhasebe entegrasyonu hakkında detaylı eğitim.",
+    "category": "İnsan Kaynakları",
+    "tags": ["İK", "Bordro"],
+    "duration": 741,
+    "views": 207,
+    "date": "2026-03-13",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    "new": false
+  },
+  {
+    "id": "4",
+    "title": "Dashboard Raporlama Temelleri",
+    "description": "Yönetim dashboard'larını okuma, KPI'ları yorumlama ve haftalık raporları hazırlama konusunda pratik bir rehber.",
+    "category": "Finans",
+    "tags": ["Finans", "Raporlama", "KPI"],
+    "duration": 210,
+    "views": 61,
+    "date": "2026-03-06",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    "new": false
+  },
+  {
+    "id": "5",
+    "title": "MS Teams ile Etkin İletişim",
+    "description": "Teams üzerinden toplantı yönetimi, kanal organizasyonu, dosya paylaşımı ve entegre araçların kullanımı.",
+    "category": "Genel",
+    "tags": ["Teams", "İletişim"],
+    "duration": 300,
+    "views": 312,
+    "date": "2026-02-28",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    "new": false
+  },
+  {
+    "id": "6",
+    "title": "E-Satınalma Modülü",
+    "description": "SAP üzerinden talep oluşturma, tedarikçi seçimi ve satınalma onay süreçlerinin yönetimi.",
+    "category": "SAP ERP",
+    "tags": ["SAP", "Satınalma"],
+    "duration": 60,
+    "views": 44,
+    "date": "2026-03-29",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    "new": true
+  },
+  {
+    "id": "7",
+    "title": "İzin & Devamsızlık Takibi",
+    "description": "Çalışan izin taleplerini sisteme girme, yönetici onay akışları ve devamsızlık raporlarına erişim.",
+    "category": "İnsan Kaynakları",
+    "tags": ["İK", "İzin"],
+    "duration": 60,
+    "views": 178,
+    "date": "2026-02-14",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+    "new": false
+  },
+  {
+    "id": "8",
+    "title": "Bütçe Planlama ve Takip",
+    "description": "Departman bütçelerini oluşturma, gerçekleşen harcamaları izleme ve sapma analizleri yapma rehberi.",
+    "category": "Finans",
+    "tags": ["Finans", "Bütçe"],
+    "duration": 887,
+    "views": 95,
+    "date": "2026-02-07",
+    "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+    "new": false
+  }
+]

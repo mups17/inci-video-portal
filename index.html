@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İnci Akademi — Eğitim Portalı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f11;
+  --bg2: #16161a;
+  --bg3: #1e1e24;
+  --bg4: #26262e;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e8f0;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --accent: #d4a853;
+  --accent2: #e8c070;
+  --accent-dim: rgba(212,168,83,0.12);
+  --accent-dim2: rgba(212,168,83,0.06);
+  --red: #e05252;
+  --green: #52c49a;
+  --sidebar: 220px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+[data-theme="light"] {
+  --bg: #f4f3ef;
+  --bg2: #ffffff;
+  --bg3: #eceae4;
+  --bg4: #e4e2da;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.13);
+  --text: #1a1a24;
+  --text2: #5a5a72;
+  --text3: #9090a8;
+  --accent: #b8882e;
+  --accent2: #c99a38;
+  --accent-dim: rgba(184,136,46,0.10);
+  --accent-dim2: rgba(184,136,46,0.05);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; }
+body { display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── LAYOUT ── */
+.shell { display: flex; flex: 1; overflow: hidden; }
+.sidebar {
+  width: var(--sidebar); flex-shrink: 0;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px; border-bottom: 1px solid var(--border);
+  background: var(--bg); flex-shrink: 0;
+}
+.topbar-logo { display: flex; align-items: center; gap: 10px; margin-right: 8px; }
+.logo-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500; color: #1a1408; letter-spacing: -.5px; flex-shrink: 0;
+}
+.logo-text { font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: -.3px; }
+.logo-text span { color: var(--text2); font-weight: 300; }
+.search-wrap { flex: 1; position: relative; max-width: 420px; }
+.search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+#search {
+  width: 100%; padding: 8px 12px 8px 34px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; font-family: var(--font); font-size: 13px; color: var(--text);
+  outline: none; transition: border-color .15s;
+}
+#search:focus { border-color: var(--accent); }
+#search::placeholder { color: var(--text3); }
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.icon-btn {
+  width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text2); transition: background .15s, color .15s;
+}
+.icon-btn:hover { background: var(--bg3); color: var(--text); }
+.avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent-dim); border: 1px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 500; color: var(--accent); cursor: pointer;
+}
+
+/* ── SIDEBAR CONTENT ── */
+.sidebar-header { padding: 14px 14px 10px; border-bottom: 1px solid var(--border); }
+.sidebar-label { font-size: 10px; font-weight: 500; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; padding: 0 10px; margin: 12px 0 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 7px 10px; border-radius: 7px; margin: 1px 4px;
+  cursor: pointer; color: var(--text2); font-size: 13px;
+  transition: background .12s, color .12s; user-select: none;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--accent); }
+.nav-item .count {
+  margin-left: auto; font-size: 11px; color: var(--text3);
+  background: var(--bg3); padding: 1px 6px; border-radius: 10px;
+}
+.nav-item.active .count { background: var(--accent-dim2); color: var(--accent); }
+.sidebar-footer {
+  margin-top: auto; padding: 10px 8px;
+  border-top: 1px solid var(--border);
+}
+.user-card { display: flex; align-items: center; gap: 9px; padding: 8px; border-radius: 8px; cursor: pointer; transition: background .12s; }
+.user-card:hover { background: var(--bg3); }
+.user-info { min-width: 0; }
+.user-name { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-role { font-size: 11px; color: var(--text3); }
+
+/* ── FILTERS ── */
+.filters { padding: 10px 20px; display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0; scrollbar-width: none; border-bottom: 1px solid var(--border); background: var(--bg); }
+.filters::-webkit-scrollbar { display: none; }
+.pill {
+  padding: 5px 14px; border-radius: 20px; font-size: 12px; font-family: var(--font);
+  border: 1px solid var(--border2); background: none; color: var(--text2);
+  cursor: pointer; white-space: nowrap; transition: all .13s; flex-shrink: 0;
+}
+.pill:hover { border-color: var(--text3); color: var(--text); }
+.pill.active { background: var(--accent); border-color: var(--accent); color: #1a1408; font-weight: 500; }
+
+/* ── CONTENT AREA ── */
+.content { flex: 1; overflow-y: auto; padding: 20px; scrollbar-width: thin; scrollbar-color: var(--bg4) transparent; }
+.content::-webkit-scrollbar { width: 4px; }
+.content::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+.section-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.section-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.section-count { font-size: 12px; color: var(--text3); }
+
+/* ── VIDEO GRID ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden; cursor: pointer;
+  transition: transform .15s, border-color .15s, box-shadow .15s;
+}
+.card:hover { transform: translateY(-3px); border-color: var(--border2); box-shadow: 0 12px 32px rgba(0,0,0,.3); }
+.thumb {
+  position: relative; aspect-ratio: 16/9; overflow: hidden;
+  background: var(--bg3);
+}
+.thumb-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.play-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.1); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; transition: background .15s, transform .15s; }
+.card:hover .play-icon { background: var(--accent); transform: scale(1.08); }
+.card:hover .play-icon svg { color: #1a1408; }
+.play-icon svg { color: rgba(255,255,255,.8); margin-left: 2px; }
+.duration {
+  position: absolute; bottom: 7px; right: 7px;
+  background: rgba(0,0,0,.75); color: #fff; font-size: 10px;
+  font-family: var(--mono); padding: 2px 6px; border-radius: 4px;
+}
+.badge-new {
+  position: absolute; top: 7px; left: 7px;
+  background: var(--accent); color: #1a1408; font-size: 9px; font-weight: 500;
+  padding: 2px 7px; border-radius: 4px; letter-spacing: .04em; text-transform: uppercase;
+}
+.cat-badge {
+  position: absolute; top: 7px; right: 7px;
+  font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 4px;
+  letter-spacing: .04em; text-transform: uppercase; display: none;
+}
+.progress-bar { height: 2px; background: var(--bg4); }
+.progress-fill { height: 2px; background: var(--accent); transition: width .3s; }
+.card-body { padding: 10px 12px 12px; }
+.card-cat { font-size: 10px; font-weight: 500; color: var(--accent); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 4px; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
+.card-meta { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+.card-meta span::before { content: '·'; margin-right: 6px; }
+.card-meta span:first-child::before { display: none; }
+.done-badge { font-size: 10px; color: var(--green); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+/* ── EMPTY STATE ── */
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text3); gap: 10px; text-align: center; }
+.empty svg { opacity: .3; }
+.empty p { font-size: 13px; }
+
+/* ── MODAL OVERLAY ── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.85);
+  display: none; align-items: center; justify-content: center;
+  z-index: 100; padding: 16px; backdrop-filter: blur(6px);
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--radius-lg); width: 100%; max-width: 860px;
+  max-height: 90vh; overflow: hidden; display: flex; flex-direction: column;
+  animation: modal-in .18s ease;
+}
+@keyframes modal-in { from { opacity:0; transform:scale(.97) } to { opacity:1; transform:scale(1) } }
+.modal-video { position: relative; aspect-ratio: 16/9; background: #000; }
+.modal-video iframe { width: 100%; height: 100%; border: none; }
+/* Custom player wrapper */
+.player-wrap { position: relative; width: 100%; height: 100%; background: #000; }
+.player-wrap video { width: 100%; height: 100%; display: block; }
+.player-controls {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.9) 0%, transparent 100%);
+  padding: 24px 14px 10px; opacity: 0; transition: opacity .2s;
+}
+.player-wrap:hover .player-controls { opacity: 1; }
+.player-wrap:fullscreen .player-controls { opacity: 1; }
+.progress-track {
+  height: 3px; background: rgba(255,255,255,.2); border-radius: 2px;
+  cursor: pointer; margin-bottom: 8px; position: relative;
+}
+.progress-track:hover { height: 5px; }
+.progress-played { height: 100%; background: var(--accent); border-radius: 2px; pointer-events: none; transition: width .1s linear; }
+.ctrl-row { display: flex; align-items: center; gap: 8px; color: #fff; }
+.ctrl-btn { background: none; border: none; cursor: pointer; color: inherit; padding: 4px; border-radius: 4px; display: flex; align-items: center; transition: background .12s; }
+.ctrl-btn:hover { background: rgba(255,255,255,.12); }
+.ctrl-time { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,.7); margin: 0 4px; }
+.ctrl-speed {
+  font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15); color: #fff; border-radius: 4px;
+  padding: 2px 6px; cursor: pointer; margin-left: auto;
+}
+.ctrl-title { font-size: 11px; color: rgba(255,255,255,.5); margin-left: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
+.modal-info { padding: 14px 18px 16px; }
+.modal-cat { font-size: 10px; font-weight: 500; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; }
+.modal-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.modal-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+.modal-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.modal-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.1);
+  color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  z-index: 10; transition: background .12s;
+}
+.modal-close:hover { background: rgba(255,255,255,.15); }
+.btn {
+  padding: 7px 16px; border-radius: 7px; font-family: var(--font);
+  font-size: 12px; font-weight: 500; cursor: pointer; transition: all .13s;
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--accent); border: 1px solid var(--accent); color: #1a1408; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-ghost { background: none; border: 1px solid var(--border2); color: var(--text2); }
+.btn-ghost:hover { background: var(--bg3); color: var(--text); border-color: var(--text3); }
+
+/* ── CATEGORY COLORS ── */
+.cat-sap { --cat: #34c78a; --cat-bg: rgba(52,199,138,.1); }
+.cat-crm { --cat: #5b9cf6; --cat-bg: rgba(91,156,246,.1); }
+.cat-ik { --cat: #f0a050; --cat-bg: rgba(240,160,80,.1); }
+.cat-finans { --cat: #b57bfc; --cat-bg: rgba(181,123,252,.1); }
+.cat-genel { --cat: #e87878; --cat-bg: rgba(232,120,120,.1); }
+
+/* ── SCROLL FADE-IN ── */
+@keyframes fade-up { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }
+.card { animation: fade-up .3s ease both; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--bg4); border: 1px solid var(--border2); color: var(--text);
+  font-size: 12px; padding: 8px 16px; border-radius: 20px;
+  opacity: 0; transition: all .2s; pointer-events: none; z-index: 200;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="logo-mark">İA</div>
+    <div class="logo-text">İnci <span>Akademi</span></div>
+  </div>
+  <div class="search-wrap">
+    <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <input id="search" type="text" placeholder="Video veya araç ara…" autocomplete="off">
+  </div>
+  <div class="topbar-right">
+    <button class="icon-btn" id="theme-btn" title="Tema değiştir">
+      <svg id="theme-icon" width="15" height="15" fill="none" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="avatar" title="Profilim">MB</div>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div style="flex:1; overflow-y:auto; padding: 8px 0;">
+      <div class="sidebar-label">Kategoriler</div>
+      <div class="nav-item active" data-cat="all">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".8"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor" opacity=".8"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".8"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".4"/></svg>
+        Tüm Videolar
+        <span class="count" id="cnt-all">0</span>
+      </div>
+      <div class="nav-item" data-cat="SAP ERP">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 14h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        SAP ERP
+        <span class="count" id="cnt-SAP ERP">0</span>
+      </div>
+      <div class="nav-item" data-cat="CRM">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+        CRM
+        <span class="count" id="cnt-CRM">0</span>
+      </div>
+      <div class="nav-item" data-cat="İnsan Kaynakları">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M8 2v4l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+        İnsan Kaynakları
+        <span class="count" id="cnt-İnsan Kaynakları">0</span>
+      </div>
+      <div class="nav-item" data-cat="Finans">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M3 11l3-4 3 2.5 4-6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        Finans
+        <span class="count" id="cnt-Finans">0</span>
+      </div>
+      <div class="nav-item" data-cat="Genel">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+        Genel
+        <span class="count" id="cnt-Genel">0</span>
+      </div>
+      <div class="sidebar-label" style="margin-top:16px">Hesabım</div>
+      <div class="nav-item" data-cat="completed">
+        <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 8l2.5 2.5L11 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        Tamamlananlar
+        <span class="count" id="cnt-completed">0</span>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar" style="width:28px;height:28px;font-size:10px;flex-shrink:0">MB</div>
+        <div class="user-info">
+          <div class="user-name">Mustafa Berk</div>
+          <div class="user-role">Stajyer · E&amp;İ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- FILTER PILLS -->
+    <div class="filters" id="filter-pills"></div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="section-header">
+        <span class="section-title" id="section-title">Tüm Eğitimler</span>
+        <span class="section-count" id="section-count"></span>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" style="display:none">
+        <svg width="40" height="40" fill="none" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.4"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <p>Sonuç bulunamadı</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="modal-video">
+      <button class="modal-close" id="modal-close">
+        <svg width="12" height="12" fill="none" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <!-- Player: YouTube embed OR native video -->
+      <div id="player-container" style="width:100%;height:100%;"></div>
+    </div>
+    <div class="modal-info">
+      <div class="modal-cat" id="modal-cat"></div>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="mark-done-btn">
+          <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M2.5 8l4 4 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Tamamlandı işaretle
+        </button>
+        <button class="btn btn-ghost" onclick="copyLink()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 16 16"><rect x="6" y="1" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 6H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+          Linki kopyala
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──
+let videos = [];
+let progress = JSON.parse(localStorage.getItem('inci_progress') || '{}');
+let completed = JSON.parse(localStorage.getItem('inci_completed') || '{}');
+let currentCat = 'all';
+let currentSearch = '';
+let currentFilter = 'all';
+let currentVideo = null;
+let playerInterval = null;
+
+const CAT_CLASS = {
+  'SAP ERP': 'cat-sap',
+  'CRM': 'cat-crm',
+  'İnsan Kaynakları': 'cat-ik',
+  'Finans': 'cat-finans',
+  'Genel': 'cat-genel'
+};
+
+// ── INIT ──
+async function init() {
+  try {
+    const r = await fetch('videos.json');
+    videos = await r.json();
+  } catch {
+    // Fallback inline demo data
+    videos = [
+      { id:'1', title:'SAP S/4HANA\'ya Giriş', description:'SAP S/4HANA sistemine ilk giriş ve temel navigasyon eğitimi.', category:'SAP ERP', tags:['SAP'], duration:2535, views:124, date:'2026-03-27', youtube_id:'dQw4w9WgXcQ', new:false },
+      { id:'2', title:'CRM\'de Fırsat Yönetimi', description:'Müşteri fırsatlarını CRM üzerinden takip etme rehberi.', category:'CRM', tags:['CRM'], duration:1710, views:89, date:'2026-03-20', youtube_id:'dQw4w9WgXcQ', new:false },
+      { id:'3', title:'Bordro Süreci', description:'Aylık bordro sürecinin tüm adımları.', category:'İnsan Kaynakları', tags:['İK'], duration:2145, views:207, date:'2026-03-13', youtube_id:'dQw4w9WgXcQ', new:false },
+    ];
+  }
+  updateCounts();
+  renderFilters();
+  renderGrid();
+}
+
+// ── UTILS ──
+function fmtDuration(s) {
+  const m = Math.floor(s / 60), sec = s % 60;
+  return `${m}:${String(sec).padStart(2,'0')}`;
+}
+function fmtViews(n) { return n > 999 ? (n/1000).toFixed(1)+'B' : n+''; }
+function fmtDate(d) {
+  const diff = Math.floor((Date.now() - new Date(d)) / 86400000);
+  if (diff === 0) return 'Bugün';
+  if (diff === 1) return 'Dün';
+  if (diff < 7) return diff + ' gün önce';
+  if (diff < 30) return Math.floor(diff/7) + ' hafta önce';
+  if (diff < 365) return Math.floor(diff/30) + ' ay önce';
+  return Math.floor(diff/365) + ' yıl önce';
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── COUNTS ──
+function updateCounts() {
+  document.getElementById('cnt-all').textContent = videos.length;
+  ['SAP ERP','CRM','İnsan Kaynakları','Finans','Genel'].forEach(cat => {
+    const el = document.getElementById('cnt-'+cat);
+    if (el) el.textContent = videos.filter(v => v.category === cat).length;
+  });
+  const doneCount = videos.filter(v => completed[v.id]).length;
+  document.getElementById('cnt-completed').textContent = doneCount;
+}
+
+// ── FILTER PILLS ──
+const PILLS = ['Tümü', 'SAP ERP', 'CRM', 'İnsan Kaynakları', 'Finans', 'Genel', 'Yeni Eklenenler'];
+function renderFilters() {
+  const wrap = document.getElementById('filter-pills');
+  wrap.innerHTML = PILLS.map(p => `<button class="pill ${p==='Tümü'?'active':''}" data-filter="${p}">${p}</button>`).join('');
+  wrap.querySelectorAll('.pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      wrap.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderGrid();
+    });
+  });
+}
+
+// ── GRID ──
+function filterVideos() {
+  let list = [...videos];
+  // Category filter from sidebar
+  if (currentCat !== 'all' && currentCat !== 'completed') {
+    list = list.filter(v => v.category === currentCat);
+  }
+  if (currentCat === 'completed') {
+    list = list.filter(v => completed[v.id]);
+  }
+  // Pill filter
+  if (currentFilter !== 'Tümü') {
+    if (currentFilter === 'Yeni Eklenenler') list = list.filter(v => v.new);
+    else list = list.filter(v => v.category === currentFilter);
+  }
+  // Search
+  if (currentSearch.trim()) {
+    const q = currentSearch.toLowerCase();
+    list = list.filter(v =>
+      v.title.toLowerCase().includes(q) ||
+      v.category.toLowerCase().includes(q) ||
+      (v.tags || []).some(t => t.toLowerCase().includes(q)) ||
+      v.description.toLowerCase().includes(q)
+    );
+  }
+  return list;
+}
+
+function renderGrid() {
+  const list = filterVideos();
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const count = document.getElementById('section-count');
+  const title = document.getElementById('section-title');
+
+  if (currentSearch) title.textContent = `"${currentSearch}" için sonuçlar`;
+  else if (currentCat === 'completed') title.textContent = 'Tamamlananlar';
+  else if (currentCat !== 'all') title.textContent = currentCat;
+  else title.textContent = 'Tüm Eğitimler';
+
+  count.textContent = list.length + ' video';
+
+  if (!list.length) { grid.innerHTML = ''; empty.style.display = 'flex'; return; }
+  empty.style.display = 'none';
+
+  grid.innerHTML = list.map((v, i) => {
+    const catCls = CAT_CLASS[v.category] || 'cat-genel';
+    const prog = progress[v.id] || 0;
+    const done = completed[v.id];
+    const thumbBg = {
+      'SAP ERP': '#0a1f15', 'CRM': '#0d1826', 'İnsan Kaynakları': '#1f1508',
+      'Finans': '#150d26', 'Genel': '#1f0d0d'
+    }[v.category] || '#14141a';
+    const iconColor = {
+      'SAP ERP': '#34c78a', 'CRM': '#5b9cf6', 'İnsan Kaynakları': '#f0a050',
+      'Finans': '#b57bfc', 'Genel': '#e87878'
+    }[v.category] || '#d4a853';
+
+    return `
+    <div class="card ${catCls}" style="animation-delay:${i*0.04}s" data-id="${v.id}" onclick="openVideo('${v.id}')">
+      <div class="thumb">
+        <div class="thumb-bg" style="background:${thumbBg}">
+          <div class="play-icon">
+            <svg width="14" height="14" fill="none" viewBox="0 0 16 16"><path d="M4 2.5l10 5.5-10 5.5V2.5z" fill="${iconColor}"/></svg>
+          </div>
+        </div>
+        <div class="duration">${fmtDuration(v.duration)}</div>
+        ${v.new ? '<div class="badge-new">Yeni</div>' : ''}
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${done?100:prog}%"></div></div>
+      <div class="card-body">
+        <div class="card-cat" style="color:${iconColor}">${v.category}</div>
+        <div class="card-title">${v.title}</div>
+        <div class="card-meta">
+          <span>${fmtDate(v.date)}</span>
+          <span>${fmtViews(v.views)} izlenme</span>
+        </div>
+        ${done ? '<div class="done-badge"><svg width="11" height="11" fill="none" viewBox="0 0 16 16"><path d="M2 8l4 4 8-8" stroke="#52c49a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Tamamlandı</div>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── VIDEO MODAL ──
+function openVideo(id) {
+  currentVideo = videos.find(v => v.id === id);
+  if (!currentVideo) return;
+
+  const overlay = document.getElementById('overlay');
+  document.getElementById('modal-cat').textContent = currentVideo.category;
+  document.getElementById('modal-title').textContent = currentVideo.title;
+  document.getElementById('modal-desc').textContent = currentVideo.description;
+
+  const done = completed[id];
+  document.getElementById('mark-done-btn').innerHTML = done
+    ? '<svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M2.5 8l4 4 7-7" stroke="#52c49a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Tamamlandı ✓'
+    : '<svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M2.5 8l4 4 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Tamamlandı işaretle';
+
+  buildPlayer(currentVideo);
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buildPlayer(v) {
+  const container = document.getElementById('player-container');
+  clearInterval(playerInterval);
+
+  if (v.youtube_id) {
+    // YouTube embed — production'da gerçek video URL'ine değiştir
+    container.innerHTML = `<iframe
+      src="https://www.youtube.com/embed/${v.youtube_id}?autoplay=1&rel=0&modestbranding=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>`;
+  } else if (v.url) {
+    // Native HTML5 player (SharePoint stream URL)
+    const savedTime = parseFloat(progress[v.id+'_time'] || 0);
+    container.innerHTML = `
+      <div class="player-wrap" id="pwrap">
+        <video id="vid" src="${v.url}" preload="metadata"></video>
+        <div class="player-controls">
+          <div class="progress-track" id="pt" onclick="seekClick(event)">
+            <div class="progress-played" id="pp" style="width:0%"></div>
+          </div>
+          <div class="ctrl-row">
+            <button class="ctrl-btn" onclick="seekRel(-10)" title="10s geri">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M11 17l-5-5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 17l-5-5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/></svg>
+            </button>
+            <button class="ctrl-btn" id="playbtn" onclick="togglePlay()">
+              <svg id="play-ico" width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
+            </button>
+            <button class="ctrl-btn" onclick="seekRel(10)" title="10s ileri">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M13 17l5-5-5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 17l5-5-5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/></svg>
+            </button>
+            <span class="ctrl-time" id="ct">0:00 / ${fmtDuration(v.duration)}</span>
+            <select class="ctrl-speed" onchange="setSpeed(this.value)">
+              <option value="0.5">0.5x</option><option value="0.75">0.75x</option>
+              <option value="1" selected>1x</option><option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option><option value="2">2x</option>
+            </select>
+            <button class="ctrl-btn" onclick="toggleFS()" title="Tam ekran" style="margin-left:4px">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M3 8V4h4M17 4h4v4M21 16v4h-4M7 20H3v-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="ctrl-title">${v.title}</span>
+          </div>
+        </div>
+      </div>`;
+    const vid = document.getElementById('vid');
+    vid.currentTime = savedTime;
+    vid.play();
+    vid.addEventListener('timeupdate', updatePlayerProgress);
+  }
+}
+
+function updatePlayerProgress() {
+  const vid = document.getElementById('vid');
+  if (!vid || !currentVideo) return;
+  const pct = (vid.currentTime / vid.duration) * 100;
+  const pp = document.getElementById('pp');
+  if (pp) pp.style.width = Math.round(pct) + '%';
+  const ct = document.getElementById('ct');
+  if (ct) ct.textContent = fmtDuration(Math.floor(vid.currentTime)) + ' / ' + fmtDuration(currentVideo.duration);
+  // Save progress
+  progress[currentVideo.id] = Math.round(pct);
+  progress[currentVideo.id + '_time'] = vid.currentTime;
+  localStorage.setItem('inci_progress', JSON.stringify(progress));
+  renderGrid();
+}
+
+function togglePlay() {
+  const vid = document.getElementById('vid'); if (!vid) return;
+  const ico = document.getElementById('play-ico');
+  if (vid.paused) {
+    vid.play();
+    ico.innerHTML = '<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>';
+  } else {
+    vid.pause();
+    ico.innerHTML = '<path d="M5 3l14 9-14 9V3z" fill="currentColor"/>';
+  }
+}
+
+function seekRel(delta) {
+  const vid = document.getElementById('vid'); if (!vid) return;
+  vid.currentTime = Math.max(0, Math.min(vid.duration, vid.currentTime + delta));
+}
+
+function seekClick(e) {
+  const vid = document.getElementById('vid'); if (!vid) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  vid.currentTime = vid.duration * pct;
+}
+
+function setSpeed(v) {
+  const vid = document.getElementById('vid'); if (!vid) return;
+  vid.playbackRate = parseFloat(v);
+}
+
+function toggleFS() {
+  const wrap = document.getElementById('pwrap'); if (!wrap) return;
+  if (!document.fullscreenElement) wrap.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('player-container').innerHTML = '';
+  clearInterval(playerInterval);
+  currentVideo = null;
+  renderGrid();
+  updateCounts();
+}
+
+function markDone() {
+  if (!currentVideo) return;
+  const id = currentVideo.id;
+  if (!completed[id]) {
+    completed[id] = true;
+    progress[id] = 100;
+    localStorage.setItem('inci_completed', JSON.stringify(completed));
+    localStorage.setItem('inci_progress', JSON.stringify(progress));
+    document.getElementById('mark-done-btn').innerHTML = '<svg width="13" height="13" fill="none" viewBox="0 0 16 16"><path d="M2.5 8l4 4 7-7" stroke="#52c49a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Tamamlandı ✓';
+    toast('✓ Tamamlandı olarak işaretlendi');
+    updateCounts();
+  }
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href + '#v=' + (currentVideo?.id || ''));
+  toast('Link kopyalandı');
+}
+
+// ── SIDEBAR NAV ──
+document.querySelectorAll('.nav-item[data-cat]').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+    currentCat = el.dataset.cat;
+    currentSearch = '';
+    document.getElementById('search').value = '';
+    renderGrid();
+  });
+});
+
+// ── SEARCH ──
+document.getElementById('search').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  renderGrid();
+});
+
+// ── THEME ──
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('inci_theme', t);
+  const icon = document.getElementById('theme-icon');
+  if (t === 'light') {
+    icon.innerHTML = '<circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+}
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  setTheme(cur === 'light' ? 'dark' : 'light');
+});
+// Apply saved theme
+const savedTheme = localStorage.getItem('inci_theme') || 'dark';
+setTheme(savedTheme);
+
+// ── MODAL EVENTS ──
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', e => { if (e.target === document.getElementById('overlay')) closeModal(); });
+document.getElementById('mark-done-btn').addEventListener('click', markDone);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── BOOT ──
+init();
+</script>
+</body>
+</html>
