@@ -1,0 +1,68 @@
+name: Deploy Video Portal
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+**Commit changes** bas.
+
+---
+
+## Adım 5 — GitHub Pages'i aç
+
+Repo sayfasında üstte **Settings** sekmesine tıkla.
+
+Sol menüden **Pages**'e gir.
+
+**Source** kısmında **GitHub Actions**'ı seç.
+
+---
+
+## Adım 6 — Deploy'u bekle
+
+Repo ana sayfasına dön. Üstte **Actions** sekmesine tıkla.
+
+Sarı bir daire dönüyor olmalı — bu deploy ediliyor demek. 1-2 dakika bekle, yeşil tike dönecek.
+
+---
+
+## Adım 7 — Siteye gir
+
+Actions sekmesinde yeşil tik gördükten sonra Settings → Pages'e tekrar gir.
+
+En üstte şöyle bir URL yazar:
+```
+https://KULLANICI_ADIN.github.io/inci-video-portal
